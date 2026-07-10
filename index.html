@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NFCore — Sistemas que conectam o físico ao digital</title>
+<title>Konecta — Sistemas que conectam o físico ao digital</title>
 <meta name="description" content="Sistemas sob medida integrados com tags NFC. Sem app pra baixar, sem senha pra lembrar — só encostar.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,7 +136,7 @@
     font-size: 20px;
     letter-spacing: -0.01em;
   }
-  .brand-name span { color: var(--indigo-tint); font-weight: 500; }
+  .brand-name .k-accent { color: var(--coral); }
 
   .hero-content { position: relative; z-index: 1; max-width: 640px; }
 
@@ -294,6 +294,27 @@
 
   .card p strong { color: var(--navy); font-weight: 600; }
 
+  .featured-example {
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px dashed var(--border);
+  }
+  .featured-example:first-of-type {
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
+  }
+
+  .featured-example-label {
+    display: block;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    color: var(--indigo);
+    margin-bottom: 6px;
+  }
+
   /* video placeholder */
   .video-slot {
     position: relative;
@@ -365,11 +386,21 @@
   }
 
   .contact-slot {
+    display: block;
     background: rgba(255,255,255,0.04);
     border: 2px dashed rgba(139,137,255,0.55);
     border-radius: var(--radius-md);
     padding: 22px;
     text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .contact-slot:hover,
+  .contact-slot:focus-visible {
+    border-color: var(--coral);
+    background: rgba(255,255,255,0.07);
   }
 
   .contact-slot .icon {
@@ -397,6 +428,7 @@
     background: var(--navy);
     border-top: 1px solid rgba(255,255,255,0.08);
     padding: 22px 0 32px;
+    color: var(--white);
   }
 
   .footer-inner {
@@ -438,7 +470,7 @@
         <path d="M 78 78 A 22 22 0 0 1 56 56" fill="none" stroke="#8B89FF" stroke-width="9" stroke-linecap="round"/>
         <circle cx="78" cy="78" r="13" fill="#FF6B5B"/>
       </svg>
-      <span class="brand-name">NFC<span>ore</span></span>
+      <span class="brand-name"><span class="k-accent">K</span>onecta</span>
     </div>
 
     <div class="hero-content">
@@ -493,22 +525,33 @@
 
     <div class="example-grid">
 
-      <!-- Card em destaque: Estoque, com espaço pro vídeo do pitch -->
+      <!-- Card em destaque: Estoque + Manutenção, com espaço pro vídeo do pitch -->
       <article class="card card--featured">
         <!-- ================================================================
              ESPAÇO PARA O VÍDEO DO PITCH
              Substituir esta div por um <video controls> ou <iframe> (YouTube/Vimeo)
              mantendo a proporção 16:9 do container .video-slot
+             Este vídeo cobre os dois exemplos abaixo: Estoque e Manutenção
         ================================================================== -->
         <div class="video-slot">
           🎬 Vídeo do pitch entra aqui
-          <small>Substituir por &lt;video&gt; ou &lt;iframe&gt; — proporção 16:9</small>
+          <small>Substituir por &lt;video&gt; ou &lt;iframe&gt; — inclui os exemplos de Estoque e Manutenção — proporção 16:9</small>
         </div>
         <div class="card-body">
-          <span class="card-tag">Exemplo em destaque</span>
-          <h3>Controle de estoque</h3>
-          <p><strong>O problema:</strong> produto acaba na prateleira e ninguém percebe até faltar de verdade.</p>
-          <p><strong>Com a NFCore:</strong> o funcionário encosta o celular na tag ao lado do item, informa a quantidade, um responsável aprova, e o pedido já vai direto pro WhatsApp do fornecedor. Automaticamente.</p>
+          <span class="card-tag">Exemplos em destaque no vídeo</span>
+          <h3>Estoque &amp; Manutenção</h3>
+
+          <div class="featured-example">
+            <span class="featured-example-label">Exemplo 1 — Controle de estoque</span>
+            <p><strong>O problema:</strong> produto acaba na prateleira e ninguém percebe até faltar de verdade.</p>
+            <p><strong>Com a Konecta:</strong> o funcionário encosta o celular na tag ao lado do item, informa a quantidade, um responsável aprova, e o pedido já vai direto pro WhatsApp do fornecedor. Automaticamente.</p>
+          </div>
+
+          <div class="featured-example">
+            <span class="featured-example-label">Exemplo 2 — Manutenção de equipamentos</span>
+            <p><strong>O problema:</strong> máquina com defeito e o aviso se perde em papel ou grupo de WhatsApp.</p>
+            <p><strong>Com a Konecta:</strong> tag na própria máquina abre um chamado na hora, já organizado pra equipe técnica assumir e resolver.</p>
+          </div>
         </div>
       </article>
 
@@ -516,9 +559,9 @@
         <article class="card">
           <div class="card-body">
             <span class="card-tag">Exemplo</span>
-            <h3>Manutenção de equipamentos</h3>
-            <p><strong>O problema:</strong> máquina com defeito e o aviso se perde em papel ou grupo de WhatsApp.</p>
-            <p><strong>Com a NFCore:</strong> tag na própria máquina abre um chamado na hora, direto pra equipe técnica.</p>
+            <h3>Cardápio e avaliação no Google</h3>
+            <p><strong>O problema:</strong> cardápio físico desatualizado, e pedir avaliação no Google depende do cliente lembrar depois.</p>
+            <p><strong>Com a Konecta:</strong> tag na mesa abre o cardápio digital na hora, ou leva direto pra avaliação no Google — sem baixar app, sem procurar link.</p>
           </div>
         </article>
 
@@ -527,25 +570,25 @@
             <span class="card-tag">Exemplo</span>
             <h3>Checklist de inspeção</h3>
             <p><strong>O problema:</strong> ronda de segurança ou qualidade que ninguém sabe se foi feita de verdade.</p>
-            <p><strong>Com a NFCore:</strong> cada ponto de checagem tem uma tag — confirma o quê, quando e por quem.</p>
+            <p><strong>Com a Konecta:</strong> cada ponto de checagem tem uma tag — confirma o quê, quando e por quem.</p>
           </div>
         </article>
 
         <article class="card">
           <div class="card-body">
             <span class="card-tag">Exemplo</span>
-            <h3>Retirada de ferramentas e EPI</h3>
-            <p><strong>O problema:</strong> item emprestado que ninguém sabe quem pegou ou quando devolve.</p>
-            <p><strong>Com a NFCore:</strong> tag no armário registra retirada e devolução automaticamente.</p>
+            <h3>Controle de inventário</h3>
+            <p><strong>O problema:</strong> item sai ou entra no armazém e ninguém registra — inventário nunca bate com a realidade.</p>
+            <p><strong>Com a Konecta:</strong> cada item tem sua tag — encostar registra entrada ou saída na hora, sem planilha manual.</p>
           </div>
         </article>
 
         <article class="card">
           <div class="card-body">
             <span class="card-tag">Exemplo</span>
-            <h3>Feedback do cliente</h3>
-            <p><strong>O problema:</strong> saber se o atendimento está bom sem depender de pesquisa formal.</p>
-            <p><strong>Com a NFCore:</strong> tag no balcão ou na mesa — avaliação em segundos, sem baixar app.</p>
+            <h3>Agendamento rápido</h3>
+            <p><strong>O problema:</strong> cliente precisa ligar ou mandar mensagem pra marcar horário, e às vezes desiste no caminho.</p>
+            <p><strong>Com a Konecta:</strong> tag abre direto a tela de agendamento — escolhe o horário e pronto, sem fricção.</p>
           </div>
         </article>
       </div>
@@ -570,25 +613,50 @@
          - E-mail:   href="mailto:contato@nfcore.com.br"
          - Instagram/site: href="https://..."
     ================================================================== -->
+    <!-- ================================================================
+         MEIOS DE CONTATO
+         - WhatsApp e E-mail ficam ofuscados em base64 (atributo data-b64)
+           e só são decodificados no navegador, via o script no fim da
+           página. Isso evita que bots de scraping capturem o número/e-mail
+           direto do código-fonte. NÃO é uma proteção contra alguém abrindo
+           o DevTools de propósito — só barra coleta automática.
+         - Pra trocar o número/e-mail reais: gere um novo base64 da URL
+           completa (ex.: no console do navegador, `btoa("https://wa.me/55...")`)
+           e substitua o valor do atributo data-b64 correspondente.
+         - Instagram fica com link normal — não há necessidade de ofuscar
+           um perfil público.
+    ================================================================== -->
     <div class="contact-grid">
-      <div class="contact-slot">
+      <a class="contact-slot" data-b64="aHR0cHM6Ly93YS5tZS81NTMxOTk1MTk0MzQ1P3RleHQ9T2wlQzMlQTElMkMlMjB2aSUyMGElMjBkZW1vbnN0cmElQzMlQTclQzMlQTNvJTIwZSUyMHF1ZXJvJTIwc2FiZXIlMjBtYWlzJTIwc29icmUlMjBhJTIwS29uZWN0YQ==" target="_blank" rel="noopener">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3a9 9 0 00-7.5 13.9L3 21l4.3-1.4A9 9 0 1012 3z"/></svg>
         <strong>WhatsApp</strong>
-        <span>[ inserir link wa.me aqui ]</span>
-      </div>
-      <div class="contact-slot">
+        <span>Chamar agora</span>
+      </a>
+      <a class="contact-slot" data-b64="bWFpbHRvOm1hcmNpb3BhaXZhMjAwNEBnbWFpbC5jb20/c3ViamVjdD1RdWVybyUyMHNhYmVyJTIwbWFpcyUyMHNvYnJlJTIwYSUyMEtvbmVjdGE=">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6l9 7 9-7M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg>
         <strong>E-mail</strong>
-        <span>[ inserir e-mail aqui ]</span>
-      </div>
-      <div class="contact-slot">
+        <span>Enviar mensagem</span>
+      </a>
+      <a class="contact-slot" href="https://instagram.com/konectasistemas" target="_blank" rel="noopener">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 000 18M12 3a14 14 0 010 18M3 12h18"/></svg>
-        <strong>Instagram / site</strong>
-        <span>[ inserir link aqui ]</span>
-      </div>
+        <strong>Instagram</strong>
+        <span>@konectasistemas</span>
+      </a>
     </div>
   </div>
 </section>
+
+<script>
+  // Decodifica os links de contato ofuscados (WhatsApp/e-mail) só no navegador.
+  // Isso evita que scrapers automáticos leiam o número/e-mail direto do HTML.
+  document.querySelectorAll('.contact-slot[data-b64]').forEach(function (el) {
+    try {
+      el.href = atob(el.getAttribute('data-b64'));
+    } catch (e) {
+      console.warn('Konecta: falha ao decodificar link de contato', e);
+    }
+  });
+</script>
 
 <footer>
   <div class="wrap footer-inner">
@@ -599,9 +667,9 @@
         <path d="M 78 78 A 22 22 0 0 1 56 56" fill="none" stroke="#8B89FF" stroke-width="10" stroke-linecap="round"/>
         <circle cx="78" cy="78" r="15" fill="#FF6B5B"/>
       </svg>
-      <span class="brand-name">NFC<span>ore</span></span>
+      <span class="brand-name"><span class="k-accent">K</span>onecta</span>
     </div>
-    <span class="fine">Sistemas + NFC · João Monlevade, MG</span>
+    <span class="fine">Sistemas sob medida, a um toque de distância · João Monlevade, MG</span>
   </div>
 </footer>
 
