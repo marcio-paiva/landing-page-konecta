@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFCore — Sistemas que conectam o físico ao digital</title>
+<meta name="description" content="Sistemas sob medida integrados com tags NFC. Sem app pra baixar, sem senha pra lembrar — só encostar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A1A2E;
+    --navy-soft: #23233a;
+    --light: #F5F5FA;
+    --white: #FFFFFF;
+    --indigo: #3D3AF1;
+    --indigo-tint: #8B89FF;
+    --coral: #FF6B5B;
+    --coral-dark: #e2543f;
+    --muted: #6b6f8a;
+    --muted-light: #b9bbd6;
+    --border: #e3e3ef;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+    --display: 'Space Grotesk', 'Poppins', sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+    --max: 1100px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--body);
+    color: var(--navy);
+    background: var(--light);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img, svg { max-width: 100%; display: block; }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 3px solid var(--coral);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    overflow: hidden;
+    padding: 56px 0 72px;
+  }
+
+  .hero-rings {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 340px;
+    height: 340px;
+    pointer-events: none;
+  }
+
+  .hero-rings svg { width: 100%; height: 100%; }
+
+  .ring {
+    fill: none;
+    stroke: var(--indigo-tint);
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0;
+    transform-origin: center;
+    animation: ringPulse 2.6s ease-out forwards;
+  }
+  .ring--1 { animation-delay: 0.1s; }
+  .ring--2 { animation-delay: 0.35s; }
+  .ring--3 { animation-delay: 0.6s; }
+
+  @keyframes ringPulse {
+    0%   { opacity: 0; transform: scale(0.5); }
+    35%  { opacity: 0.55; }
+    100% { opacity: 0.22; transform: scale(1); }
+  }
+
+  .core-dot {
+    fill: var(--coral);
+    animation: dotPop 0.6s ease-out 0s both;
+  }
+
+  @keyframes dotPop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 44px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand svg { width: 34px; height: 34px; }
+
+  .brand-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .brand-name span { color: var(--indigo-tint); font-weight: 500; }
+
+  .hero-content { position: relative; z-index: 1; max-width: 640px; }
+
+  .hero .eyebrow { color: var(--coral); margin-bottom: 16px; display: block; }
+
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(32px, 6vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--indigo-tint);
+  }
+
+  .hero p.lede {
+    font-size: clamp(16px, 2.4vw, 19px);
+    color: var(--muted-light);
+    margin: 0 0 32px;
+    max-width: 52ch;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn--coral {
+    background: var(--coral);
+    color: var(--navy);
+  }
+  .btn--coral:hover { background: var(--coral-dark); color: var(--white); }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.28);
+  }
+  .btn--ghost:hover { border-color: var(--white); }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .how {
+    padding: 68px 0;
+  }
+
+  .section-head {
+    max-width: 560px;
+    margin: 0 0 40px;
+  }
+
+  .section-head .eyebrow { color: var(--indigo); margin-bottom: 10px; display: block; }
+
+  .section-head h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(24px, 4vw, 32px);
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .step {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 26px 22px;
+  }
+
+  .step-num {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--coral);
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+
+  .step h3 {
+    font-family: var(--display);
+    font-size: 18px;
+    margin: 0 0 8px;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+
+  /* ---------- EXAMPLES ---------- */
+  .examples { padding: 24px 0 72px; }
+
+  .example-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .card--featured {
+    border-color: var(--indigo);
+    box-shadow: 0 0 0 1px var(--indigo);
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    background: #EDEDFD;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  .card-body { padding: 26px; }
+
+  .card h3 {
+    font-family: var(--display);
+    font-size: 20px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+  .card p + p { margin-top: 8px; }
+
+  .card p strong { color: var(--navy); font-weight: 600; }
+
+  /* video placeholder */
+  .video-slot {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: repeating-linear-gradient(135deg, #EDEDFD, #EDEDFD 10px, #E4E4FB 10px, #E4E4FB 20px);
+    border-bottom: 2px dashed var(--indigo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--indigo);
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 20px;
+  }
+
+  .video-slot small {
+    display: block;
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 6px;
+    font-size: 12.5px;
+  }
+
+  .small-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  @media (min-width: 640px) {
+    .small-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (min-width: 900px) {
+    .steps { grid-template-columns: repeat(3, 1fr); }
+    .small-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact {
+    background: var(--navy);
+    color: var(--white);
+    padding: 68px 0 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact .section-head .eyebrow { color: var(--coral); }
+  .contact .section-head h2 { color: var(--white); }
+  .contact .section-head p {
+    color: var(--muted-light);
+    margin: 14px 0 0;
+    font-size: 15.5px;
+    max-width: 50ch;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 36px;
+  }
+
+  @media (min-width: 640px) {
+    .contact-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .contact-slot {
+    background: rgba(255,255,255,0.04);
+    border: 2px dashed rgba(139,137,255,0.55);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    text-align: center;
+  }
+
+  .contact-slot .icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 12px;
+    color: var(--indigo-tint);
+  }
+
+  .contact-slot strong {
+    display: block;
+    font-family: var(--display);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .contact-slot span {
+    display: block;
+    font-size: 12.5px;
+    color: var(--muted-light);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 22px 0 32px;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .footer-inner .brand { margin-bottom: 0; }
+  .footer-inner .brand svg { width: 22px; height: 22px; }
+  .footer-inner .brand-name { font-size: 15px; }
+
+  footer .fine {
+    font-size: 12.5px;
+    color: var(--muted-light);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-rings" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <path class="ring ring--1" d="M 150 150 A 90 90 0 0 1 60 60" />
+      <path class="ring ring--2" d="M 150 150 A 60 60 0 0 1 90 90" />
+      <path class="ring ring--3" d="M 150 150 A 30 30 0 0 1 120 120" />
+      <circle class="core-dot" cx="150" cy="150" r="10" />
+    </svg>
+  </div>
+
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M 78 78 A 66 66 0 0 1 12 12" fill="none" stroke="#8B89FF" stroke-width="9" stroke-linecap="round" opacity="0.4"/>
+        <path d="M 78 78 A 44 44 0 0 1 34 34" fill="none" stroke="#8B89FF" stroke-width="9" stroke-linecap="round" opacity="0.7"/>
+        <path d="M 78 78 A 22 22 0 0 1 56 56" fill="none" stroke="#8B89FF" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="78" cy="78" r="13" fill="#FF6B5B"/>
+      </svg>
+      <span class="brand-name">NFC<span>ore</span></span>
+    </div>
+
+    <div class="hero-content">
+      <span class="eyebrow">Você acabou de fazer isso agora</span>
+      <h1>Encostou o celular. <em>Chegou aqui.</em> É exatamente assim que funciona pra sua equipe também.</h1>
+      <p class="lede">
+        A gente desenvolve sistemas sob medida pra resolver processos reais
+        da sua empresa — e integra tudo com tags NFC, pra qualquer pessoa da
+        equipe usar sem precisar aprender nada novo. Sem app. Sem login.
+        Só encostar.
+      </p>
+      <a class="btn btn--coral" href="#contato">Quero saber mais</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section class="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Como funciona</span>
+      <h2>Três passos. Zero curva de aprendizado.</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">PASSO 1</div>
+        <h3>Encosta o celular</h3>
+        <p>Uma tag NFC discreta fica no ponto onde o processo acontece — na prateleira, na máquina, na mesa. Sem precisar procurar nada.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">PASSO 2</div>
+        <h3>O sistema abre sozinho</h3>
+        <p>Nenhum aplicativo pra baixar, nenhum endereço pra digitar. A tela certa já abre, na hora, pronta pra usar.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">PASSO 3</div>
+        <h3>A ação acontece de verdade</h3>
+        <p>Pedido enviado, chamado aberto, aprovação disparada — tudo já integrado ao resto do processo, automaticamente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXEMPLOS ============ -->
+<section class="examples" id="exemplos">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Exemplos de uso</span>
+      <h2>Um problema que talvez você reconheça</h2>
+    </div>
+
+    <div class="example-grid">
+
+      <!-- Card em destaque: Estoque, com espaço pro vídeo do pitch -->
+      <article class="card card--featured">
+        <!-- ================================================================
+             ESPAÇO PARA O VÍDEO DO PITCH
+             Substituir esta div por um <video controls> ou <iframe> (YouTube/Vimeo)
+             mantendo a proporção 16:9 do container .video-slot
+        ================================================================== -->
+        <div class="video-slot">
+          🎬 Vídeo do pitch entra aqui
+          <small>Substituir por &lt;video&gt; ou &lt;iframe&gt; — proporção 16:9</small>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Exemplo em destaque</span>
+          <h3>Controle de estoque</h3>
+          <p><strong>O problema:</strong> produto acaba na prateleira e ninguém percebe até faltar de verdade.</p>
+          <p><strong>Com a NFCore:</strong> o funcionário encosta o celular na tag ao lado do item, informa a quantidade, um responsável aprova, e o pedido já vai direto pro WhatsApp do fornecedor. Automaticamente.</p>
+        </div>
+      </article>
+
+      <div class="small-grid">
+        <article class="card">
+          <div class="card-body">
+            <span class="card-tag">Exemplo</span>
+            <h3>Manutenção de equipamentos</h3>
+            <p><strong>O problema:</strong> máquina com defeito e o aviso se perde em papel ou grupo de WhatsApp.</p>
+            <p><strong>Com a NFCore:</strong> tag na própria máquina abre um chamado na hora, direto pra equipe técnica.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-body">
+            <span class="card-tag">Exemplo</span>
+            <h3>Checklist de inspeção</h3>
+            <p><strong>O problema:</strong> ronda de segurança ou qualidade que ninguém sabe se foi feita de verdade.</p>
+            <p><strong>Com a NFCore:</strong> cada ponto de checagem tem uma tag — confirma o quê, quando e por quem.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-body">
+            <span class="card-tag">Exemplo</span>
+            <h3>Retirada de ferramentas e EPI</h3>
+            <p><strong>O problema:</strong> item emprestado que ninguém sabe quem pegou ou quando devolve.</p>
+            <p><strong>Com a NFCore:</strong> tag no armário registra retirada e devolução automaticamente.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-body">
+            <span class="card-tag">Exemplo</span>
+            <h3>Feedback do cliente</h3>
+            <p><strong>O problema:</strong> saber se o atendimento está bom sem depender de pesquisa formal.</p>
+            <p><strong>Com a NFCore:</strong> tag no balcão ou na mesa — avaliação em segundos, sem baixar app.</p>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATO ============ -->
+<section class="contact" id="contato">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Fale com a gente</span>
+      <h2>Reconheceu um problema da sua empresa aqui?</h2>
+      <p>Conta pra gente o que trava o seu processo hoje. A gente te mostra como a mesma lógica pode resolver.</p>
+    </div>
+
+    <!-- ================================================================
+         ESPAÇO PARA OS MEIOS DE CONTATO
+         Substituir cada .contact-slot por um <a href="..."> real:
+         - WhatsApp: href="https://wa.me/55DDDNUMERO?text=..."
+         - E-mail:   href="mailto:contato@nfcore.com.br"
+         - Instagram/site: href="https://..."
+    ================================================================== -->
+    <div class="contact-grid">
+      <div class="contact-slot">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3a9 9 0 00-7.5 13.9L3 21l4.3-1.4A9 9 0 1012 3z"/></svg>
+        <strong>WhatsApp</strong>
+        <span>[ inserir link wa.me aqui ]</span>
+      </div>
+      <div class="contact-slot">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6l9 7 9-7M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z"/></svg>
+        <strong>E-mail</strong>
+        <span>[ inserir e-mail aqui ]</span>
+      </div>
+      <div class="contact-slot">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 000 18M12 3a14 14 0 010 18M3 12h18"/></svg>
+        <strong>Instagram / site</strong>
+        <span>[ inserir link aqui ]</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M 78 78 A 66 66 0 0 1 12 12" fill="none" stroke="#8B89FF" stroke-width="10" stroke-linecap="round" opacity="0.4"/>
+        <path d="M 78 78 A 44 44 0 0 1 34 34" fill="none" stroke="#8B89FF" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+        <path d="M 78 78 A 22 22 0 0 1 56 56" fill="none" stroke="#8B89FF" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="78" cy="78" r="15" fill="#FF6B5B"/>
+      </svg>
+      <span class="brand-name">NFC<span>ore</span></span>
+    </div>
+    <span class="fine">Sistemas + NFC · João Monlevade, MG</span>
+  </div>
+</footer>
+
+</body>
+</html>
