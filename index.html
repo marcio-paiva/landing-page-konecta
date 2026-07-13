@@ -315,30 +315,23 @@
     margin-bottom: 6px;
   }
 
+  /* video: wrapper forces a true 16:9 box, iframe fills it edge to edge */
   .video-slot {
     position: relative;
+    width: 100%;
     aspect-ratio: 16 / 9;
-    background: repeating-linear-gradient(135deg, #EDEDFD, #EDEDFD 10px, #E4E4FB 10px, #E4E4FB 20px);
-    border-bottom: 2px dashed var(--indigo);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: var(--indigo);
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: 14px;
-    padding: 20px;
+    overflow: hidden;
+    background: #000;
+    border-bottom: 2px solid var(--indigo);
   }
 
-  .video-slot iframe,
-  .video-slot video {
+  .video-slot iframe {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     border: 0;
+    display: block;
   }
 
   .video-slot small {
@@ -538,18 +531,12 @@
 
       <!-- Card em destaque: Estoque + Manutenção, com espaço pro vídeo do pitch -->
       <article class="card card--featured">
-        <!-- ================================================================
-             ESPAÇO PARA O VÍDEO DO PITCH
-             Substituir esta div por um <video controls> ou <iframe> (YouTube/Vimeo)
-             mantendo a proporção 16:9 do container .video-slot
-             Este vídeo cobre os dois exemplos abaixo: Estoque e Manutenção
-        ================================================================== -->
         <div class="video-slot">
-          <iframe 
-            src="https://www.youtube.com/embed/poQ44KjwX5M?si=LIXUIgVZBosSlljS&amp;rel=0" 
-            title="Vídeo de Pitch - Konecta" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          <iframe
+            src="https://www.youtube.com/embed/poQ44KjwX5M?si=LIXUIgVZBosSlljS&amp;rel=0"
+            title="Vídeo de Pitch - Konecta"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
         </div>
@@ -622,26 +609,6 @@
       <p>Conta pra gente o que trava o seu processo hoje. A gente te mostra como a mesma lógica pode resolver.</p>
     </div>
 
-    <!-- ================================================================
-         ESPAÇO PARA OS MEIOS DE CONTATO
-         Substituir cada .contact-slot por um <a href="..."> real:
-         - WhatsApp: href="https://wa.me/55DDDNUMERO?text=..."
-         - E-mail:   href="mailto:contato@nfcore.com.br"
-         - Instagram/site: href="https://..."
-    ================================================================== -->
-    <!-- ================================================================
-         MEIOS DE CONTATO
-         - WhatsApp e E-mail ficam ofuscados em base64 (atributo data-b64)
-           e só são decodificados no navegador, via o script no fim da
-           página. Isso evita que bots de scraping capturem o número/e-mail
-           direto do código-fonte. NÃO é uma proteção contra alguém abrindo
-           o DevTools de propósito — só barra coleta automática.
-         - Pra trocar o número/e-mail reais: gere um novo base64 da URL
-           completa (ex.: no console do navegador, `btoa("https://wa.me/55...")`)
-           e substitua o valor do atributo data-b64 correspondente.
-         - Instagram fica com link normal — não há necessidade de ofuscar
-           um perfil público.
-    ================================================================== -->
     <div class="contact-grid">
       <a class="contact-slot" data-b64="aHR0cHM6Ly93YS5tZS81NTMxOTk1MTk0MzQ1P3RleHQ9T2wlQzMlQTElMkMlMjB2aSUyMGElMjBkZW1vbnN0cmElQzMlQTclQzMlQTNvJTIwZSUyMHF1ZXJvJTIwc2FiZXIlMjBtYWlzJTIwc29icmUlMjBhJTIwS29uZWN0YQ==" target="_blank" rel="noopener">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3a9 9 0 00-7.5 13.9L3 21l4.3-1.4A9 9 0 1012 3z"/></svg>
@@ -663,8 +630,6 @@
 </section>
 
 <script>
-  // Decodifica os links de contato ofuscados (WhatsApp/e-mail) só no navegador.
-  // Isso evita que scrapers automáticos leiam o número/e-mail direto do HTML.
   document.querySelectorAll('.contact-slot[data-b64]').forEach(function (el) {
     try {
       el.href = atob(el.getAttribute('data-b64'));
